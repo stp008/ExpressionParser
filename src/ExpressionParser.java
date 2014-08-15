@@ -11,8 +11,9 @@ public class ExpressionParser {
 	public static void main(String[] args) {
 		Stack<String> operations = new Stack<String>();
 		Stack<Double> values = new Stack<Double>();
-		String exp = "( 11 + ( ( exp ( ( 2.010635 + ( sin ( ( PI / 2 ) ) * 3 ) ) ) + 50 ) / 2 ) )";
-		// String exp = "( 10 + 2 )";
+		// String exp =
+		// "( 11 + ( ( exp ( ( 2.010635 + ( sin ( ( PI / 2 ) ) * 3 ) ) ) + 50 ) / 2 ) )";
+		String exp = "( ( ( 10 + 2 ) ) )";
 		String[] chars = exp.split(" ");
 		for (int i = 0; i < chars.length; i++) {
 			String character = chars[i];
@@ -49,7 +50,13 @@ public class ExpressionParser {
 				values.push(Math.E);
 				log.debug("Добавление значения: E");
 			} else if (character.equals(")")) {
-				String operation = operations.pop();
+				String operation;
+				try {
+					operation = operations.pop();
+				} catch (Exception e) {
+					operation = "empty";
+					log.debug("Вложенные скобки");
+				}
 				double v = values.pop();
 				if (operation.equals("+")) {
 					v = values.pop() + v;
